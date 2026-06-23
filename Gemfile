@@ -76,3 +76,7 @@ group :development, :test do
   gem "timecop"
   gem "database_cleaner-active_record"
 end
+
+gem "sidekiq-cron", "~> 2.4"
+gem "whenever", require: false
+
