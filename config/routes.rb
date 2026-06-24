@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     resources :test_results, only: :create
   end
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # HTML dashboard and report pages
+  root "dashboard#index"
+  get "daily_statistics", to: "daily_statistics#index"
+  get "monthly_averages", to: "monthly_averages#index"
 end

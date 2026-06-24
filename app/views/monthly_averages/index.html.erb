@@ -1,0 +1,41 @@
+<% content_for :title, "Monthly Averages — Result Analyzer" %>
+
+<div class="space-y-6">
+  <header>
+    <h1 class="text-2xl font-bold text-slate-900">Monthly Averages</h1>
+    <p class="text-sm text-slate-500">
+      Per-subject averages over a lookback window that grows until at least 200 results are included.
+    </p>
+  </header>
+
+  <section class="overflow-hidden rounded-xl bg-white shadow ring-1 ring-slate-200">
+    <% if @monthly_averages.any? %>
+      <table class="min-w-full divide-y divide-slate-200 text-sm">
+        <thead class="bg-slate-100 text-left text-xs uppercase tracking-wide text-slate-500">
+          <tr>
+            <th class="px-6 py-3 font-semibold">Period (trigger Monday)</th>
+            <th class="px-6 py-3 font-semibold">Subject</th>
+            <th class="px-6 py-3 font-semibold text-right">Avg daily high</th>
+            <th class="px-6 py-3 font-semibold text-right">Avg daily low</th>
+            <th class="px-6 py-3 font-semibold text-right">Results used</th>
+            <th class="px-6 py-3 font-semibold text-right">Days used</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <% @monthly_averages.each do |avg| %>
+            <tr class="hover:bg-slate-50">
+              <td class="px-6 py-3 tabular-nums text-slate-500"><%= avg.period.strftime("%Y-%m-%d") %></td>
+              <td class="px-6 py-3 font-medium text-slate-900"><%= avg.subject %></td>
+              <td class="px-6 py-3 text-right tabular-nums text-emerald-600"><%= number_with_precision(avg.avg_daily_high, precision: 2) %></td>
+              <td class="px-6 py-3 text-right tabular-nums text-rose-600"><%= number_with_precision(avg.avg_daily_low, precision: 2) %></td>
+              <td class="px-6 py-3 text-right tabular-nums font-semibold"><%= number_with_delimiter(avg.result_count) %></td>
+              <td class="px-6 py-3 text-right tabular-nums"><%= avg.days_used %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <%= render "shared/empty", message: "No monthly averages yet. They are produced on the trigger Monday (or db:seed)." %>
+    <% end %>
+  </section>
+</div>

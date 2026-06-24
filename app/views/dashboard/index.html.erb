@@ -1,0 +1,45 @@
+<% content_for :title, "Dashboard — Result Analyzer" %>
+
+<div class="space-y-6">
+  <header class="flex items-end justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900">Dashboard</h1>
+      <p class="text-sm text-slate-500">Most recent test results ingested from MSM.</p>
+    </div>
+    <div class="rounded-lg bg-white px-5 py-3 text-center shadow ring-1 ring-slate-200">
+      <div class="text-2xl font-bold text-slate-900"><%= number_with_delimiter(@total_count) %></div>
+      <div class="text-xs uppercase tracking-wide text-slate-500">Total results</div>
+    </div>
+  </header>
+
+  <section class="overflow-hidden rounded-xl bg-white shadow ring-1 ring-slate-200">
+    <% if @test_results.any? %>
+      <table class="min-w-full divide-y divide-slate-200 text-sm">
+        <thead class="bg-slate-100 text-left text-xs uppercase tracking-wide text-slate-500">
+          <tr>
+            <th class="px-6 py-3 font-semibold">Student</th>
+            <th class="px-6 py-3 font-semibold">Subject</th>
+            <th class="px-6 py-3 font-semibold text-right">Marks</th>
+            <th class="px-6 py-3 font-semibold text-right">Recorded at</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <% @test_results.each do |result| %>
+            <tr class="hover:bg-slate-50">
+              <td class="px-6 py-3 font-medium text-slate-900"><%= result.student_name %></td>
+              <td class="px-6 py-3">
+                <span class="inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700">
+                  <%= result.subject %>
+                </span>
+              </td>
+              <td class="px-6 py-3 text-right tabular-nums font-semibold"><%= result.marks %></td>
+              <td class="px-6 py-3 text-right tabular-nums text-slate-500"><%= result.recorded_at.strftime("%Y-%m-%d %H:%M") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <%= render "shared/empty", message: "No test results yet. Ingest data via POST /api/test_results or run db:seed." %>
+    <% end %>
+  </section>
+</div>

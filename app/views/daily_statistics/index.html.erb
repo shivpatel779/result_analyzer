@@ -1,0 +1,43 @@
+<% content_for :title, "Daily Statistics — Result Analyzer" %>
+
+<div class="space-y-6">
+  <header>
+    <h1 class="text-2xl font-bold text-slate-900">Daily Statistics</h1>
+    <p class="text-sm text-slate-500">End-of-Day aggregates per subject, grouped by date.</p>
+  </header>
+
+  <% if @statistics_by_date.any? %>
+    <% @statistics_by_date.each do |date, stats| %>
+      <section class="overflow-hidden rounded-xl bg-white shadow ring-1 ring-slate-200">
+        <div class="flex items-center justify-between bg-slate-100 px-6 py-3">
+          <h2 class="font-semibold text-slate-900"><%= date.strftime("%A, %B %-d, %Y") %></h2>
+          <span class="text-xs uppercase tracking-wide text-slate-500"><%= pluralize(stats.size, "subject") %></span>
+        </div>
+        <table class="min-w-full divide-y divide-slate-200 text-sm">
+          <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
+            <tr>
+              <th class="px-6 py-3 font-semibold">Subject</th>
+              <th class="px-6 py-3 font-semibold text-right">Daily low</th>
+              <th class="px-6 py-3 font-semibold text-right">Daily high</th>
+              <th class="px-6 py-3 font-semibold text-right">Results</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <% stats.each do |stat| %>
+              <tr class="hover:bg-slate-50">
+                <td class="px-6 py-3 font-medium text-slate-900"><%= stat.subject %></td>
+                <td class="px-6 py-3 text-right tabular-nums text-rose-600"><%= stat.daily_low %></td>
+                <td class="px-6 py-3 text-right tabular-nums text-emerald-600"><%= stat.daily_high %></td>
+                <td class="px-6 py-3 text-right tabular-nums"><%= stat.result_count %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    <% end %>
+  <% else %>
+    <section class="overflow-hidden rounded-xl bg-white shadow ring-1 ring-slate-200">
+      <%= render "shared/empty", message: "No daily statistics yet. They are produced by the EOD job (or db:seed)." %>
+    </section>
+  <% end %>
+</div>
