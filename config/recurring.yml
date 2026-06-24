@@ -14,6 +14,12 @@ development:
     class: EodStatisticsJob
     queue: default
     schedule: every day at 6pm
+  # Runs daily; the trigger-date guard inside the job restricts work to the
+  # Monday of the week containing the month's third Wednesday.
+  monthly_averages:
+    class: MonthlyAveragesJob
+    queue: default
+    schedule: every day at 6:05pm
 
 production:
   clear_solid_queue_finished_jobs:
@@ -23,3 +29,9 @@ production:
     class: EodStatisticsJob
     queue: default
     schedule: every day at 6pm
+  # Runs daily; the trigger-date guard inside the job restricts work to the
+  # Monday of the week containing the month's third Wednesday.
+  monthly_averages:
+    class: MonthlyAveragesJob
+    queue: default
+    schedule: every day at 6:05pm
