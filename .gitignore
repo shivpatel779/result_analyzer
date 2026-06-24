@@ -39,6 +39,3 @@
 
 # Ignore SimpleCov coverage reports.
 /coverage
-
-# Local development environment overrides (DB password etc.)
-.dev.env
